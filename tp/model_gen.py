@@ -7,9 +7,7 @@ from sklearn.tree import DecisionTreeClassifier
 import pandas as pd
 
 
-
-
-
+# Load and combine all training samples
 df = pd.read_csv("sample.csv")
 
 df = df.append(pd.read_csv("sample1-1.csv"), ignore_index=True)
@@ -33,12 +31,7 @@ df = df.append(pd.read_csv("sample2-8.csv"), ignore_index=True)
 df = df.append(pd.read_csv("sample2-9.csv"), ignore_index=True)
 df = df.append(pd.read_csv("sample2-10.csv"), ignore_index=True)
 
-
-
-
-
-
-
+# Preprocessing
 df = df.drop("Unnamed: 0", axis=1)
 X = df[["r1", "r2", "p1", "p2"]]
 y = df[["gesture"]]
@@ -47,8 +40,7 @@ print(y)
 
 
 
-
-
+# Fitting models
 lr = LinearRegression()
 lr.fit(X, y)
 
@@ -66,33 +58,30 @@ dtce.fit(X, y)
 
 
 
+# Get model's score
 scores = lr.score(X, y)
+print(lr)
 print(scores)
 
 scores = llr.score(X, y)
+print(llr)
 print(scores)
 
 scores = knn.score(X, y)
+print(knn)
 print(scores)
 
 scores = dtcg.score(X, y)
+print(dtcg)
 print(scores)
 
 scores = dtce.score(X, y)
+print(dtce)
 print(scores)
 
 print("===========")
-print("===========")
 
-
-dft = pd.read_csv("sample.csv")
-dft = dft.drop("Unnamed: 0", axis=1)
-dftX = dft[["r1", "r2", "p1", "p2"]]
-
-print("==========")
-print(dtcg.predict(dftX).sum())
-
-
+# Result score
 # # Linear Reg.
 # 0.5004092880674549
 # # Logistic Reg.
@@ -106,18 +95,6 @@ print(dtcg.predict(dftX).sum())
 
 
 
-
-
-
-# 모델 파일 저장
+# Save model to serialized file
 saved_model = joblib.dump(dtcg, "savedmodel.pkl")
 print(saved_model)
-
-
-
-# 모델 파일 로드
-# ls = joblib.load("savedmodel.pkl")
-# print(ls)
-# print(ls.coef_)
-# print(ls.intercept_)
-
