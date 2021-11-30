@@ -13,44 +13,49 @@ pitch1 = None
 roll2 = None
 pitch2 = None
 
+df = pd.DataFrame({
+    "r1": [],
+    "r2": [],
+    "p1": [],
+    "p2": [],
+    "gesture":[], 
+})
 
 
 
 
 
+def notify_callback(sender: int, data: bytearray, df):
 
-def notify_callback(sender: int, data: bytearray):
-    # print('sender: ', sender, 'data: ', data)
-    received = data.decode() # [:len(data)-1]
+    received = data.decode()[:len(data)-2]
 
     tmp = received.split("/")
-    print(tmp)
 
     roll1 = int(float(tmp[0]))
     pitch1 = int(float(tmp[1]))
     roll2 = int(float(tmp[2]))
     pitch2 = int(float(tmp[3]))
     
-    # if roll1 != None and roll2 != None and pitch1 != None and pitch2 != None:
-    #     print("===================")
-    #     print("111: " + str(roll1) + " | " + str(pitch1))
-    #     print("222: " + str(roll2) + " | " + str(pitch2))
+    if roll1 != None and roll2 != None and pitch1 != None and pitch2 != None:
+        print("===================")
+        print("111: " + str(roll1) + " | " + str(pitch1))
+        print("222: " + str(roll2) + " | " + str(pitch2))
 
-    #     df = df.append({
-    #         "r1": roll1,
-    #         "r2": roll2,
-    #         "p1": pitch1,
-    #         "p2": pitch2,
-    #         "gesture": 0, 
-    #     }, ignore_index=True)
+        df = df.append({
+            "r1": roll1,
+            "r2": roll2,
+            "p1": pitch1,
+            "p2": pitch2,
+        }, ignore_index=True)
         
-    #     roll1 = None
-    #     pitch1 = None
-    #     roll2 = None
-    #     pitch2 = None
+        roll1 = None
+        pitch1 = None
+        roll2 = None
+        pitch2 = None
         
-    #     res = collections.Counter(model.predict(df))
-    #     print(max(res))
+        res = collections.Counter(model.predict(df))
+
+        print(max(res))
 
 
 
@@ -100,7 +105,7 @@ async def run():
 
     # await client.write_gatt_char(target_characteristic, bytes(b's'))
     # start notify
-    await client.start_notify(target_characteristic, notify_callback)
+    await client.start_notify(target_characteristic, notify_callback, df)
           
     # client 가 연결된 상태라면
     if client.is_connected:
@@ -118,15 +123,9 @@ async def run():
 
 
 
-df = pd.DataFrame({
-    "r1": [],
-    "r2": [],
-    "p1": [],
-    "p2": [],
-    "gesture":[], 
-})
 
-model = joblib.load("dtc_g.pkl")
+
+model = joblib.load("./tp/dtc_g.pkl")
 loop = asyncio.get_event_loop()
 loop.run_until_complete(run())
 print('done')
