@@ -152,8 +152,8 @@ async def run():
 
     # Connection control
     if client.is_connected:
-        # Connection time
-        # await asyncio.sleep(120) 
+        # Connection time(1H)
+        await asyncio.sleep(3600) 
         print('try to deactivate notify.')
         # 활성시켰단 notify를 중지 시킨다.
         await client.stop_notify(target_characteristic)
@@ -167,7 +167,7 @@ async def run():
 
 # Main code
 # Load trained ML model
-model = joblib.load("./tp/dtc_g.pkl")
+model = joblib.load("./tp/dtc_g_fs.pkl")
 # Run async task for communicate with device
 loop = asyncio.get_event_loop()
 loop.run_until_complete(run())
