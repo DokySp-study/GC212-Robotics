@@ -15,7 +15,7 @@ df = pd.DataFrame({
 })
 
 # 'COM3' 부분에 환경에 맞는 포트 입력
-ser = serial.Serial('/dev/cu.usbmodem14101', 9600)
+ser = serial.Serial('/dev/cu.usbmodem1422201', 9600)
 
 roll1 = None
 pitch1 = None

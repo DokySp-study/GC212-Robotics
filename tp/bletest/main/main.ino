@@ -117,20 +117,15 @@ void loop()
   // we have to send data, as requested
 
   digitalWrite(13, HIGH);
-  String rtn1r = "11/" + String(gx1);
-  String rtn1p = "12/" + String(gy1);
-  String rtn2r = "21/" + String(gx2);
-  String rtn2p = "22/" + String(gy2);
+  String rtn1 = "1/" + String(round(gx1)) + "/" + String(round(gy1));
+  String rtn2 = "2/" + String(round(gx2)) + "/" + String(round(gy2));
   
-  Serial.println(rtn1r);
-  Serial.println(rtn1p);
-  Serial.println(rtn2r);
-  Serial.println(rtn2p);
+  Serial.println(rtn1);
+  Serial.println(rtn2);
+
+  BTSerial.println(rtn1);
+  BTSerial.println(rtn2);
   
-  BTSerial.println(rtn1r);
-  BTSerial.println(rtn1p);
-  BTSerial.println(rtn2r);
-  BTSerial.println(rtn2p);
 
   digitalWrite(13, LOW);
 

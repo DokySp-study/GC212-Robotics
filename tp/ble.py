@@ -21,39 +21,38 @@ pitch2 = None
 
 def notify_callback(sender: int, data: bytearray):
     # print('sender: ', sender, 'data: ', data)
-    received = data.decode()
+    received = data.decode() # [:len(data)-1]
 
     tmp = received.split("/")
+    print(tmp)
 
-    if int(tmp[0]) == 11:
-        roll1 = int(float(tmp[1]))
-    elif int(tmp[0]) == 12:
-        pitch1 = int(float(tmp[1]))
-    elif int(tmp[0]) == 21:
-        roll2 = int(float(tmp[1]))
-    elif int(tmp[0]) == 22:
-        pitch2 = int(float(tmp[1]))
+    # if int(tmp[0]) == 1:
+    #     roll1 = int(float(tmp[1]))
+    #     pitch1 = int(float(tmp[2]))
+    # elif int(tmp[0]) == 2:
+    #     roll2 = int(float(tmp[1]))
+    #     pitch2 = int(float(tmp[2]))
     
-    if roll1 != None and roll2 != None and pitch1 != None and pitch2 != None:
-        print("===================")
-        print("111: " + str(roll1) + " | " + str(pitch1))
-        print("222: " + str(roll2) + " | " + str(pitch2))
+    # if roll1 != None and roll2 != None and pitch1 != None and pitch2 != None:
+    #     print("===================")
+    #     print("111: " + str(roll1) + " | " + str(pitch1))
+    #     print("222: " + str(roll2) + " | " + str(pitch2))
 
-        df = df.append({
-            "r1": roll1,
-            "r2": roll2,
-            "p1": pitch1,
-            "p2": pitch2,
-            "gesture": 0, 
-        }, ignore_index=True)
+    #     df = df.append({
+    #         "r1": roll1,
+    #         "r2": roll2,
+    #         "p1": pitch1,
+    #         "p2": pitch2,
+    #         "gesture": 0, 
+    #     }, ignore_index=True)
         
-        roll1 = None
-        pitch1 = None
-        roll2 = None
-        pitch2 = None
+    #     roll1 = None
+    #     pitch1 = None
+    #     roll2 = None
+    #     pitch2 = None
         
-        res = collections.Counter(model.predict(df))
-        print(max(res))
+    #     res = collections.Counter(model.predict(df))
+    #     print(max(res))
 
 
 
