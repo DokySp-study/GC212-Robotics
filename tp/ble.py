@@ -26,12 +26,10 @@ def notify_callback(sender: int, data: bytearray):
     tmp = received.split("/")
     print(tmp)
 
-    # if int(tmp[0]) == 1:
-    #     roll1 = int(float(tmp[1]))
-    #     pitch1 = int(float(tmp[2]))
-    # elif int(tmp[0]) == 2:
-    #     roll2 = int(float(tmp[1]))
-    #     pitch2 = int(float(tmp[2]))
+    roll1 = int(float(tmp[0]))
+    pitch1 = int(float(tmp[1]))
+    roll2 = int(float(tmp[2]))
+    pitch2 = int(float(tmp[3]))
     
     # if roll1 != None and roll2 != None and pitch1 != None and pitch2 != None:
     #     print("===================")
