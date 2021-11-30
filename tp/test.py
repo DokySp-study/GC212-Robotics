@@ -11,7 +11,7 @@ df = pd.DataFrame({
 })
 
 # 'COM3' 부분에 환경에 맞는 포트 입력
-ser = serial.Serial('/dev/cu.usbmodem14101', 9600)
+ser = serial.Serial('/dev/cu.usbmodem1422201', 9600)
 
 roll1 = None
 pitch1 = None
@@ -28,12 +28,14 @@ while True:
         
         tmp = val.split("/")
 
-        if int(tmp[0]) == 1:
+        if int(tmp[0]) == 11:
             roll1 = int(float(tmp[1]))
-            pitch1 = int(float(tmp[2]))
-        elif int(tmp[0]) == 2:
+        elif int(tmp[0]) == 12:
+            pitch1 = int(float(tmp[1]))
+        elif int(tmp[0]) == 21:
             roll2 = int(float(tmp[1]))
-            pitch2 = int(float(tmp[2]))
+        elif int(tmp[0]) == 22:
+            pitch2 = int(float(tmp[1]))
         
         if roll1 != None and roll2 != None and pitch1 != None and pitch2 != None:
             print(str(idx) + "===================")

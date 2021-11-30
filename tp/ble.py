@@ -1,16 +1,66 @@
 import asyncio
 from bleak import BleakClient, cli, discover
+import pandas as pd
+import joblib
+import collections
 
 device_name = "BLETEST"
 device_service = "0000ffe0"
 device_characteristic = "0000ffe1"
+
+roll1 = None
+pitch1 = None
+roll2 = None
+pitch2 = None
+
+
+
+
 
 
 
 def notify_callback(sender: int, data: bytearray):
     # print('sender: ', sender, 'data: ', data)
     received = data.decode()
-    print(received)
+
+    tmp = received.split("/")
+
+    if int(tmp[0]) == 11:
+        roll1 = int(float(tmp[1]))
+    elif int(tmp[0]) == 12:
+        pitch1 = int(float(tmp[1]))
+    elif int(tmp[0]) == 21:
+        roll2 = int(float(tmp[1]))
+    elif int(tmp[0]) == 22:
+        pitch2 = int(float(tmp[1]))
+    
+    if roll1 != None and roll2 != None and pitch1 != None and pitch2 != None:
+        print("===================")
+        print("111: " + str(roll1) + " | " + str(pitch1))
+        print("222: " + str(roll2) + " | " + str(pitch2))
+
+        df = df.append({
+            "r1": roll1,
+            "r2": roll2,
+            "p1": pitch1,
+            "p2": pitch2,
+            "gesture": 0, 
+        }, ignore_index=True)
+        
+        roll1 = None
+        pitch1 = None
+        roll2 = None
+        pitch2 = None
+        
+        res = collections.Counter(model.predict(df))
+        print(max(res))
+
+
+
+
+
+
+
 
 
 async def run():
@@ -67,6 +117,19 @@ async def run():
     await client.disconnect()
 
 
+
+
+
+
+df = pd.DataFrame({
+    "r1": [],
+    "r2": [],
+    "p1": [],
+    "p2": [],
+    "gesture":[], 
+})
+
+model = joblib.load("dtc_g.pkl")
 loop = asyncio.get_event_loop()
 loop.run_until_complete(run())
 print('done')
