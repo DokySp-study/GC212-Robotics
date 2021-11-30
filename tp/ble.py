@@ -83,8 +83,16 @@ def notify_callback(sender: int, data: bytearray):
 
         # Detecting motion
         if len(dft) != 0:
-            res = collections.Counter(model.predict(dft))
-            res = max(res)
+            # res = collections.Counter(model.predict(dft))
+            # res = max(res)
+            # print(res)
+            val =  (model.predict(dft)).sum() / 15 
+            if 0.9 < val and val < 1.1:
+                res = 1
+            elif 1.9 < val and val < 2.1:
+                res = 2
+            else:
+                res = 0
             print(res)
 
             if prevIdx != res:
@@ -167,7 +175,7 @@ async def run():
 
 # Main code
 # Load trained ML model
-model = joblib.load("./tp/dtc_g.pkl")
+model = joblib.load("./sample.pkl")
 # Run async task for communicate with device
 loop = asyncio.get_event_loop()
 loop.run_until_complete(run())

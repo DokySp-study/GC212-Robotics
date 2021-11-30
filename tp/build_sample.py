@@ -11,7 +11,7 @@ df = pd.DataFrame({
 })
 
 # Set serial port
-ser = serial.Serial('/dev/cu.usbmodem1422201', 9600)
+ser = serial.Serial('/dev/cu.usbmodem14301', 9600)
 
 roll1 = None
 pitch1 = None
@@ -20,7 +20,7 @@ pitch2 = None
 
 
 idx = 0
-2
+
 while True:
     if ser.readable():
         val = ser.readline()
@@ -43,7 +43,7 @@ while True:
                 "r2": roll2,
                 "p1": pitch1,
                 "p2": pitch2,
-                "gesture": 0, 
+                "gesture": 2, 
             }, ignore_index=True)
             df.to_csv("sample.csv")
             

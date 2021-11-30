@@ -3,33 +3,51 @@ from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.svm import SVR
+from sklearn.gaussian_process import GaussianProcessClassifier
 
 import pandas as pd
 
 
 # Load and combine all training samples
-df = pd.read_csv("sample.csv")
+# df = pd.read_csv("sample_f1.csv")
+df = pd.read_csv("sample1-1.csv")
 
-df = df.append(pd.read_csv("sample1-1.csv"), ignore_index=True)
+# df = df.append(pd.read_csv("sample1-1.csv"), ignore_index=True)
 df = df.append(pd.read_csv("sample1-2.csv"), ignore_index=True)
 df = df.append(pd.read_csv("sample1-3.csv"), ignore_index=True)
 df = df.append(pd.read_csv("sample1-4.csv"), ignore_index=True)
 df = df.append(pd.read_csv("sample1-5.csv"), ignore_index=True)
 df = df.append(pd.read_csv("sample1-6.csv"), ignore_index=True)
 df = df.append(pd.read_csv("sample1-7.csv"), ignore_index=True)
+
 df = df.append(pd.read_csv("sample1-8.csv"), ignore_index=True)
 df = df.append(pd.read_csv("sample1-9.csv"), ignore_index=True)
 df = df.append(pd.read_csv("sample1-10.csv"), ignore_index=True)
-# df = df.append(pd.read_csv("sample2-1.csv"), ignore_index=True)
-# df = df.append(pd.read_csv("sample2-2.csv"), ignore_index=True)
-# df = df.append(pd.read_csv("sample2-3.csv"), ignore_index=True)
-# df = df.append(pd.read_csv("sample2-4.csv"), ignore_index=True)
-# df = df.append(pd.read_csv("sample2-5.csv"), ignore_index=True)
-# df = df.append(pd.read_csv("sample2-6.csv"), ignore_index=True)
-# df = df.append(pd.read_csv("sample2-7.csv"), ignore_index=True)
-# df = df.append(pd.read_csv("sample2-8.csv"), ignore_index=True)
-# df = df.append(pd.read_csv("sample2-9.csv"), ignore_index=True)
-# df = df.append(pd.read_csv("sample2-10.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample1-11.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample1-12.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample1-13.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample1-14.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample1-15.csv"), ignore_index=True)
+
+# df = pd.read_csv("sample_f4.csv")
+
+df = df.append(pd.read_csv("sample2-1.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample2-2.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample2-3.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample2-4.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample2-5.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample2-6.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample2-7.csv"), ignore_index=True)
+
+df = df.append(pd.read_csv("sample2-8.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample2-9.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample2-10.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample2-11.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample2-12.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample2-13.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample2-14.csv"), ignore_index=True)
+df = df.append(pd.read_csv("sample2-15.csv"), ignore_index=True)
 
 # Preprocessing
 df = df.drop("Unnamed: 0", axis=1)
@@ -56,6 +74,11 @@ dtcg.fit(X, y)
 dtce = DecisionTreeClassifier(criterion="entropy")
 dtce.fit(X, y)
 
+svr = SVR(C=1, epsilon=0.1)
+svr.fit(X, y)
+
+# gp = GaussianProcessClassifier()
+# gp.fit(X, y)
 
 
 # Get model's score
@@ -79,6 +102,15 @@ scores = dtce.score(X, y)
 print(dtce)
 print(scores)
 
+scores = svr.score(X, y)
+print(svr)
+print(scores)
+
+# scores = gp.score(X, y)
+# print(gp)
+# print(scores)
+
+
 print("===========")
 
 # Result score
@@ -96,5 +128,5 @@ print("===========")
 
 
 # Save model to serialized file
-saved_model = joblib.dump(dtcg, "savedmodel.pkl")
+saved_model = joblib.dump(svr, "sample.pkl")
 print(saved_model)
