@@ -160,8 +160,8 @@ async def run():
 
     # Connection control
     if client.is_connected:
-        # Connection time
-        # await asyncio.sleep(120) 
+        # Connection time(1H)
+        await asyncio.sleep(3600) 
         print('try to deactivate notify.')
         # 활성시켰단 notify를 중지 시킨다.
         await client.stop_notify(target_characteristic)
