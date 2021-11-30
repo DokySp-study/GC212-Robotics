@@ -3,6 +3,7 @@ from bleak import BleakClient, cli, discover
 import pandas as pd
 import joblib
 import collections
+import copy
 
 device_name = "BLETEST"
 device_service = "0000ffe0"
@@ -13,19 +14,19 @@ pitch1 = None
 roll2 = None
 pitch2 = None
 
+global df
 df = pd.DataFrame({
     "r1": [],
     "r2": [],
     "p1": [],
     "p2": [],
-    "gesture":[], 
 })
 
 
 
 
 
-def notify_callback(sender: int, data: bytearray, df):
+def notify_callback(sender: int, data: bytearray):
 
     received = data.decode()[:len(data)-2]
 
@@ -37,9 +38,11 @@ def notify_callback(sender: int, data: bytearray, df):
     pitch2 = int(float(tmp[3]))
     
     if roll1 != None and roll2 != None and pitch1 != None and pitch2 != None:
-        print("===================")
-        print("111: " + str(roll1) + " | " + str(pitch1))
-        print("222: " + str(roll2) + " | " + str(pitch2))
+        # print("===================")
+        # print("111: " + str(roll1) + " | " + str(pitch1))
+        # print("222: " + str(roll2) + " | " + str(pitch2))
+        global df
+        dft = []
 
         df = df.append({
             "r1": roll1,
@@ -47,15 +50,24 @@ def notify_callback(sender: int, data: bytearray, df):
             "p1": pitch1,
             "p2": pitch2,
         }, ignore_index=True)
+
+
+        if len(df) == 20:
+            dft = df.iloc[0:20, :]
+        elif len(df) == 30:
+            dft = df.iloc[10:30, :]
+            dft.reset_index()
+            df = dft
         
+
         roll1 = None
         pitch1 = None
         roll2 = None
         pitch2 = None
         
-        res = collections.Counter(model.predict(df))
-
-        print(max(res))
+        if len(dft) != 0:
+            res = collections.Counter(model.predict(dft))
+            print(max(res))
 
 
 
@@ -105,7 +117,7 @@ async def run():
 
     # await client.write_gatt_char(target_characteristic, bytes(b's'))
     # start notify
-    await client.start_notify(target_characteristic, notify_callback, df)
+    await client.start_notify(target_characteristic, notify_callback)
           
     # client 가 연결된 상태라면
     if client.is_connected:
