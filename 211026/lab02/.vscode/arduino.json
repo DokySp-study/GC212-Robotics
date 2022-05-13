@@ -1,0 +1,6 @@
+{
+    "sketch": "lab02.ino",
+    "board": "arduino:avr:uno",
+    "port": "/dev/cu.usbmodem1432401",
+    "programmer": "arduino:avrispmkii"
+}
